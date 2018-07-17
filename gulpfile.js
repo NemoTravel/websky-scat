@@ -9,8 +9,10 @@
         minifyHtml = require('gulp-minify-html'),
         source = require('vinyl-source-stream'),
         uglify = require('gulp-uglify'),
+        less = require('gulp-less'),
         sourcemaps = require('gulp-sourcemaps'),
-        concat = require('gulp-concat');
+        concat = require('gulp-concat'),
+        karma = require('karma').Server;
 
     gulp.task('clean', function() {
         return del('build');
@@ -29,7 +31,7 @@
                     return url.replace('src/', '');
                 }
             }))
-            .pipe(concat("templates-scat.js"))
+            .pipe(concat("custom-templates.js"))
             .pipe(uglify())
             .pipe(gulp.dest('build/'));
     });
@@ -37,7 +39,7 @@
     gulp.task('build:js', function () {
         return browserify('src/index.js', { transform: strictify })
             .bundle()
-            .pipe(source('controllers-scat.js'))
+            .pipe(source('custom-controllers.js'))
             .pipe(buffer())
             .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(uglify())
@@ -45,12 +47,44 @@
             .pipe(gulp.dest('build/'));
     });
 
-    gulp.task('watch', function() {
-        gulp.watch('src/**/*.*', gulp.series('build:html', 'build:js'));
+    gulp.task('build:css', function () {
+        return gulp.src('./src/styles/insurance-with-iin.less')
+            .pipe(less())
+            .pipe(gulp.dest('./build/'));
     });
 
-    gulp.task('build', gulp.series('build:html', 'build:js'));
+    gulp.task('watch', function() {
+        gulp.watch('src/**/*.*', gulp.series('build:js', 'build:html'));
+    });
 
-    gulp.task('default', gulp.series('build', 'watch'));
+    gulp.task('test:build', () => {
+        return gulp.src([
+            'node_modules/angular-mocks/angular-mocks.js',
+            'src/**/*.spec.js'
+        ])
+            .pipe(concat('test.js'))
+            .pipe(gulp.dest('build/'));
+    });
+
+    gulp.task('test:run', (cb) => {
+        karma.start({
+            configFile: `${__dirname }/karma.conf.js`,
+            autoWatch: false,
+            singleRun: true
+        }, () => {
+            cb();
+        });
+    });
+
+    gulp.task('test', gulp.series('build:js', 'test:build', 'test:run'));
+
+    gulp.task('tdd', () => {
+        gulp.watch('src/**/*.*', gulp.series('test'));
+    });
+
+    gulp.task('build', gulp.series('build:js', 'build:html', 'build:css'));
+
+    gulp.task('default', gulp.series('clean', 'build', 'watch'));
 
 }());
+
