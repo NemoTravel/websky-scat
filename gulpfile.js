@@ -29,16 +29,27 @@
                     return url.replace('src/', '');
                 }
             }))
-            .pipe(concat("templates-rossia.js"))
+            .pipe(concat("templates-scat.js"))
             .pipe(uglify())
             .pipe(gulp.dest('build/'));
     });
 
-    gulp.task('watch', function() {
-        gulp.watch('src/**/*.*', gulp.series('build:html'));
+    gulp.task('build:js', function () {
+        return browserify('src/index.js', { transform: strictify })
+            .bundle()
+            .pipe(source('controllers-scat.js'))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(uglify())
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('build/'));
     });
 
-    gulp.task('build', gulp.series('build:html'));
+    gulp.task('watch', function() {
+        gulp.watch('src/**/*.*', gulp.series('build:html', 'build:js'));
+    });
+
+    gulp.task('build', gulp.series('build:html', 'build:js'));
 
     gulp.task('default', gulp.series('build', 'watch'));
 

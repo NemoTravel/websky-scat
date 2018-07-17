@@ -1,0 +1,124 @@
+.checkoutServices {
+    .insuranceSelect {
+        .insuranceSelect__i {
+            table.passengersInfo {
+                width: 100%;
+                tr {
+                    td {
+                        text-align: right;
+                    }
+                    td.pax-name {
+                        text-align: left;
+                    }
+                    td.iin-label {
+                        width: 80px;
+                    }
+                    td.iin-input {
+                        width: 170px;
+                    }
+                }
+                .inp {
+                    width: 160px;
+                    margin-top: -10px;
+                    margin-bottom: -10px;
+                    margin-right: -10px;
+                    margin-left: 20px;
+                }
+            }
+            .emptyIinMessage {
+                padding: 15px;
+            }
+            .btn__ins {
+                position: static !important;
+                transform: none !important;
+                color: #1b75bc !important;
+                border: #1b75bc 1px solid;
+                padding: 5px 10px;
+                line-height: 20px;
+                width: 100px;
+                display: block;
+                text-align: center;
+                span {
+                    color: inherit;
+                }
+            }
+            .btn__ins.disabled {
+                opacity: 0.5;
+            }
+            .btn__ins.active {
+                color: #ffffff !important;
+                background: #1b75bc !important;
+            }
+        }
+        input {
+            border: #666 1px solid;
+            padding: 9px 10px;
+        }
+        input.disabled {
+            opacity: 0.5;
+        }
+        input.textInp_error {
+            border-color: #d8533a;
+            background: #f1ccc5; 
+        }
+    }
+
+    .mobileShow {
+        .insuranceSelect {
+            .insuranceSelect__i {
+                table.passengersInfo {
+                    tr {
+                        td.iin-label {
+                            width: 50px;
+                        }
+                        td.iin-input {
+                            width: 140px;
+                        }
+                        td.iin-btn {
+                            width: 60px;
+                        }
+                        .inp {
+                            width: 120px;
+                            margin-top: 0px;
+                            margin-bottom: 0px;
+                        }
+                        .btn {
+                            margin-left: 5px;
+                            padding: 9px 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .checkoutServices__i .list>.item-insurance {
+        padding-bottom: 0px;
+        es-insurance-iin>.item__i {
+            padding-bottom: 20px;
+        }
+    }
+
+    .insuranceSelect__i .insurance-fares {
+        td.price-cell {
+            width: 10%;
+        }
+        td.insurance-type-cell {
+            width: 30%;
+        }
+        td.insurance-rules-cell {
+            width: 45%;
+        }
+        td.button-cell {
+            width: 15%;
+            text-align: right;
+        }
+        td {
+            vertical-align: middle;
+        }
+    }
+}
+
+.insuranceSelect__i .passenger {
+    margin-top: 20px;
+}
