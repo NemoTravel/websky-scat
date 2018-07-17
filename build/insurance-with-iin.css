@@ -1,0 +1,100 @@
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo {
+  width: 100%;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo tr td {
+  text-align: right;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.pax-name {
+  text-align: left;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.iin-label {
+  width: 80px;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.iin-input {
+  width: 170px;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i table.passengersInfo .inp {
+  width: 160px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  margin-right: -10px;
+  margin-left: 20px;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i .emptyIinMessage {
+  padding: 15px;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i .btn__ins {
+  position: static !important;
+  transform: none !important;
+  color: #1b75bc !important;
+  border: #1b75bc 1px solid;
+  padding: 5px 10px;
+  line-height: 20px;
+  width: 100px;
+  display: block;
+  text-align: center;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i .btn__ins span {
+  color: inherit;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i .btn__ins.disabled {
+  opacity: 0.5;
+}
+.checkoutServices .insuranceSelect .insuranceSelect__i .btn__ins.active {
+  color: #ffffff !important;
+  background: #1b75bc !important;
+}
+.checkoutServices .insuranceSelect input {
+  border: #666 1px solid;
+  padding: 9px 10px;
+}
+.checkoutServices .insuranceSelect input.disabled {
+  opacity: 0.5;
+}
+.checkoutServices .insuranceSelect input.textInp_error {
+  border-color: #d8533a;
+  background: #f1ccc5;
+}
+.checkoutServices .mobileShow .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.iin-label {
+  width: 50px;
+}
+.checkoutServices .mobileShow .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.iin-input {
+  width: 140px;
+}
+.checkoutServices .mobileShow .insuranceSelect .insuranceSelect__i table.passengersInfo tr td.iin-btn {
+  width: 60px;
+}
+.checkoutServices .mobileShow .insuranceSelect .insuranceSelect__i table.passengersInfo tr .inp {
+  width: 120px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.checkoutServices .mobileShow .insuranceSelect .insuranceSelect__i table.passengersInfo tr .btn {
+  margin-left: 5px;
+  padding: 9px 10px;
+}
+.checkoutServices .checkoutServices__i .list > .item-insurance {
+  padding-bottom: 0px;
+}
+.checkoutServices .checkoutServices__i .list > .item-insurance es-insurance-iin > .item__i {
+  padding-bottom: 20px;
+}
+.checkoutServices .insuranceSelect__i .insurance-fares td.price-cell {
+  width: 10%;
+}
+.checkoutServices .insuranceSelect__i .insurance-fares td.insurance-type-cell {
+  width: 30%;
+}
+.checkoutServices .insuranceSelect__i .insurance-fares td.insurance-rules-cell {
+  width: 45%;
+}
+.checkoutServices .insuranceSelect__i .insurance-fares td.button-cell {
+  width: 15%;
+  text-align: right;
+}
+.checkoutServices .insuranceSelect__i .insurance-fares td {
+  vertical-align: middle;
+}
+.insuranceSelect__i .passenger {
+  margin-top: 20px;
+}
