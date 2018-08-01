@@ -1,0 +1,131 @@
+<wrap ng-if="vm.orderInfo[vm.mode]">
+
+
+    <h2 class="title">
+        {{ 'web.orderInfo.' | aliasWithPrefix:vm.mode }}
+		<wrap ng-if="vm.mode == 'pricesIssued'">
+			<wrap ng-repeat="tax in vm.orderInfo.pricesIssued.taxes" ng-if="vm.orderInfo.amountToPay && tax.code == 'ШТ'">
+				{{ 'web.orderInfo.pricesIssuedPlus' | aliasStatic }}
+			</wrap>
+		</wrap>
+        <a ng-if="vm.orderInfo.passengerCategories.length && (vm.mode == 'pricesIssued')" href fancybox="popupDetailedprice">
+            <i class="icon_info"></i>
+        </a>
+    </h2>
+	
+
+
+    <div class="totalTable">
+        <table>
+            <tbody>
+    			<tr ng-if="vm.orderInfo[vm.mode].totalTicket">
+                    <td>
+    					<strong>{{ vm.orderInfo.descPassCountStr }}</strong>
+    				</td>
+                    <td>
+    					<strong ng-bind-html="{ value: vm.orderInfo[vm.mode].totalTicket, currency: vm.orderInfo[vm.mode].currency } | price"></strong>
+    				</td>
+                </tr>
+                <tr ng-if="vm.orderInfo[vm.mode].totalFare">
+                    <td>
+                        {{ 'web.orderInfo.prices.fare' | aliasStatic}}
+                    </td>
+                    <td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalFare, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+
+                <tr ng-if="vm.orderInfo[vm.mode].totalTax && !vm.orderInfo[vm.mode].groupedTaxes" class="tax tax-all">
+                    <td>
+                        {{ 'web.orderInfo.prices.tax' | aliasStatic}}
+                    </td>
+                    <td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalTax, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+
+                <tr ng-if="vm.orderInfo[vm.mode].totalTax && vm.orderInfo[vm.mode].groupedTaxes" ng-repeat="taxGroup in vm.orderInfo[vm.mode].groupedTaxes" class="tax tax-grouped">
+                    <td>
+                        {{ 'web.choosenFlight.taxGroup.' | aliasWithPrefix:taxGroup.code }}
+                    </td>
+                    <td ng-bind-html="{ value: taxGroup.value, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+                <tr ng-if="vm.orderInfo[vm.mode].totalTax && vm.orderInfo[vm.mode].otherTaxes" class="tax tax-other">
+                    <td>
+                        {{ 'web.choosenFlight.otherTaxes' | aliasStatic}}
+                    </td>
+                    <td ng-bind-html="{ value: vm.orderInfo[vm.mode].otherTaxes, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+
+                <tr ng-if="vm.orderInfo[vm.mode].totalExtraServices">
+                    <td>
+                        <strong>
+                            {{ 'web.orderInfo.prices.extraServices' | aliasStatic}}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServices, currency: vm.orderInfo[vm.mode].currency } | price"></strong>
+                    </td>
+                </tr>
+    			<tr ng-if="vm.orderInfo[vm.mode].totalExtraServiceByGroup.seat">
+    				<td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:'Seat' }}
+                    </td>
+    				<td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServiceByGroup.seat, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+    			</tr>
+    			<tr ng-if="vm.orderInfo[vm.mode].totalExtraServiceByGroup.insurance">
+    				<td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:'Insurance' }}
+                    </td>
+    				<td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServiceByGroup.insurance, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+    			</tr>
+                <tr ng-if="vm.orderInfo[vm.mode].totalExtraServiceByGroup.meal">
+                    <td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:'Meal' }}
+                    </td>
+                    <td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServiceByGroup.meal, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+                <tr ng-if="vm.orderInfo[vm.mode].totalExtraServiceByGroup.baggage">
+                    <td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:'Baggage' }}
+                    </td>
+                    <td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServiceByGroup.baggage, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+    			<tr ng-if="vm.orderInfo[vm.mode].totalExtraServiceByGroup.aeroexpress">
+    				<td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:'Aezh' }}
+                    </td>
+    				<td ng-bind-html="{ value: vm.orderInfo[vm.mode].totalExtraServiceByGroup.aeroexpress, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+    			</tr>
+                <tr ng-repeat="serviceItem in vm.orderInfo[vm.mode].totalCommonServicesList">
+                    <td>
+                        {{ 'web.orderInfo.prices.total' | aliasWithPrefix:(serviceItem.code | capitalizeFirstLetter) }}
+                    </td>
+                    <td ng-bind-html="{ value: serviceItem.value, currency: vm.orderInfo[vm.mode].currency } | price"></td>
+                </tr>
+        	</tbody>
+    	</table>
+        <div class="bottom">
+
+            <div class="total">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ 'web.orderInfo.prices.totalPrice' | aliasStatic}}
+                            </td>
+                            <td>
+    							<span ng-bind-html="{ value: vm.orderInfo[vm.mode].totalPrice, currency: vm.orderInfo[vm.mode].currency } | price"></span>
+    						</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="right">
+                    <a href fancybox="popupRemark">
+                        {{ 'web.choosenFlight.remarkLink' | aliasStatic}}
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <popup-detailedprice order="vm.orderInfo"></popup-detailedprice>
+
+</wrap>
