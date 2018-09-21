@@ -34,7 +34,7 @@ function InsuranceIinController(backend, $q) {
             );
         });
 
-        vm.insuranceAvailable = hasAdultKz() && !hasInternationalFlights();
+        vm.insuranceAvailable = hasAdultKz();
     }
 
     function hasAdultKzWithIin() {
