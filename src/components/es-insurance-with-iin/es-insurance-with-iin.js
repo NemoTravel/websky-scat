@@ -57,7 +57,7 @@ function InsuranceIinController(backend, $q) {
     }
 
     function hasInternationalFlights() {
-        return  vm.orderInfo.plainFlights.some(function (flight) {
+        return vm.orderInfo.plainFlights.some(function (flight) {
             var destinationCity = backend.getCityByCode(flight.destinationcity);
             var originCity = backend.getCityByCode(flight.origincity);
             return (
@@ -93,33 +93,34 @@ function InsuranceIinController(backend, $q) {
     }
 
     function switchServiceItem(itemNum, passengerNum) {
+        var params = getInsuranceSubmitParams(
+            vm.service.itemsByPassengers[passengerNum][itemNum],
+            vm.orderInfo.passengers[passengerNum].id
+        );
         if (!vm.locked) {
-            if (vm.orderInfo.passengers[passengerNum].documentNumberDiscount) {
-                backend[
-                    vm.service.itemsByPassengers[passengerNum][itemNum].selected ?
-                    'removeExtraService' :
-                    'modifyExtraService'
-                ](
-                    getInsuranceSubmitParams(
-                        vm.service.itemsByPassengers[passengerNum][itemNum],
-                        vm.orderInfo.passengers[passengerNum].id
-                    )
-                );
+            if (vm.service.itemsByPassengers[passengerNum][itemNum].selected) {
+                backend.removeExtraService(params).then(function () {
+                    vm.iinFormTouched[passengerNum] = false;
+                });
             } else {
-                if (checkAdult(vm.orderInfo.passengers[passengerNum]) || hasAdultKzWithIin()) {
-                    vm.saveIinHandlers[passengerNum]().then(function () {
-                        switchServiceItem(itemNum, passengerNum);
-                    });
+                if (vm.orderInfo.passengers[passengerNum].documentNumberDiscount) {
+                    backend.modifyExtraService(params);
                 } else {
-                    $q.race(vm.saveIinHandlers.filter(function (handler, num) {
-                        return num !== passengerNum;
-                    }).map(function (handler) {
-                        return handler();
-                    })).then(function () {
-                        switchServiceItem(itemNum, passengerNum);
-                    });
-                }
+                    if (checkAdult(vm.orderInfo.passengers[passengerNum]) || hasAdultKzWithIin()) {
+                        vm.saveIinHandlers[passengerNum]().then(function () {
+                            switchServiceItem(itemNum, passengerNum);
+                        });
+                    } else {
+                        $q.race(vm.saveIinHandlers.filter(function (handler, num) {
+                            return num !== passengerNum;
+                        }).map(function (handler) {
+                            return handler();
+                        })).then(function () {
+                            switchServiceItem(itemNum, passengerNum);
+                        });
+                    }
 
+                }
             }
         }
     }

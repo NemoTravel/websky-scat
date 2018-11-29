@@ -1,21 +1,26 @@
 angular.module('app').component('passengerIinForm', {
     templateUrl: 'components/passenger-iin-form/passenger-iin-form.html',
-    controller: ['backend', 'iinUtils', '$q', PassengerIinFormController],
+    controller: ['backend', 'iinUtils', '$q', '$element', PassengerIinFormController],
     controllerAs: 'vm',
     bindings: {
         passenger: '=passenger',
         num: '=num',
         onModify: '&',
+        submitTouched: '=touched',
         saveIin: '=?'
     }
 });
 
-function PassengerIinFormController(backend, iinUtils, $q) {
+function PassengerIinFormController(backend, iinUtils, $q, $element) {
 
     var vm = this;
 
     vm.saveIin = saveIin;
-    vm.editableValue = getIinDefaultValue(vm.passenger);    
+    vm.editableValue = getIinDefaultValue(vm.passenger);
+
+    vm.$onInit = function () {
+        iinUtils.addSaveIinHander(vm.saveIin, vm.num);
+    };
     
     function saveIin() {
 
@@ -23,26 +28,33 @@ function PassengerIinFormController(backend, iinUtils, $q) {
 
        return $q(function (resolve, reject) {
 
-            if (!vm.loading && vm.iinForm.$valid && vm.editableValue != vm.passenger.documentNumberDiscount) {
+            if (!vm.loading && vm.iinForm.$valid) {
 
-                vm.loading = true;
+                if (vm.editableValue != vm.passenger.documentNumberDiscount) {
 
-                backend.modifyPassenger({
-                    additionalDocumentType: 'ИИН',
-                    additionalDocumentNumber: vm.editableValue,
-                    index: vm.num
-                }).then(function () {
-                    vm.loading = false;
-                    vm.passenger.documentNumberDiscount = vm.editableValue;
-                    vm.onModify();
+                    vm.loading = true;
+
+                    backend.modifyPassenger({
+                        additionalDocumentType: 'ИИН',
+                        additionalDocumentNumber: vm.editableValue,
+                        index: vm.num
+                    }).then(function () {
+                        vm.loading = false;
+                        vm.passenger.documentNumberDiscount = vm.editableValue;
+                        vm.onModify();
+                        resolve();
+                    }, function () {
+                        vm.loading = false;
+                        reject();
+                    });
+
+                } else {
                     resolve();
-                }, function () {
-                    vm.loading = false;
-                    reject();
-                });
+                }
+
             } else {
                 if (vm.iinForm.$invalid) {
-                    jQuery('form.iinForm__js.ng-invalid').triggerHandler('submit');
+                    jQuery('form.iinForm__js.ng-invalid', $element).triggerHandler('submit');
                 }
                 reject();
             }

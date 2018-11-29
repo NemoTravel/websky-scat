@@ -1,13 +1,17 @@
 angular.module('app').factory('iinUtils', [
     function () {
 
+        var saveIinHandlers = [];
+
         return {
             getIinStart: getIinStart,
             getIinCenturyGenderCode: getIinCenturyGenderCode,
             getCenturyByYear: getCenturyByYear,
             getIinCheckSumm: getIinCheckSumm,
             isValidIin: isValidIin,
-            isValidIinForPax: isValidIinForPax
+            isValidIinForPax: isValidIinForPax,
+            addSaveIinHander: addSaveIinHander,
+            getSaveIinHanders: getSaveIinHanders
         };
 
         function getIinStart(dateOfBirth, gender) {
@@ -75,6 +79,14 @@ angular.module('app').factory('iinUtils', [
                 }
                 return result;
             }
+        }
+
+        function addSaveIinHander(cb, num) {
+            saveIinHandlers[num] = cb;
+        }
+
+        function getSaveIinHanders() {
+            return saveIinHandlers;
         }
 
     }
