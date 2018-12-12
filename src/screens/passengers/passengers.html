@@ -179,6 +179,7 @@
                                  class="textInp"
                                  error-highlight="{{vm.submitTouched}}"
                                  placeholder="{{ 'web.passengersInfo.lastName' | aliasStatic}}"
+                                 uppercase-by-input
                                  prevent-browser-suggestions />
                         </div>
                       </td>
@@ -203,6 +204,7 @@
                                  class="textInp"
                                  error-highlight="{{vm.submitTouched}}"
                                  placeholder="{{ 'web.passengersInfo.firstName' | aliasStatic}}"
+                                 uppercase-by-input
                                  prevent-browser-suggestions />
                         </div>
                       </td>
@@ -533,6 +535,7 @@
                                  name="lastName"
                                  ng-model="vm.customer.lastName"
                                  required
+                                 uppercase-by-input
                                  ng-pattern="'customer.lastNameRegexp' | param"
                                  class="textInp"
                                  error-highlight="{{vm.submitTouched}}"
@@ -549,6 +552,7 @@
                                  name="firstName"
                                  ng-model="vm.customer.firstName"
                                  required
+                                 uppercase-by-input
                                  ng-pattern="'customer.firstNameRegexp' | param"
                                  class="textInp"
                                  error-highlight="{{vm.submitTouched}}"
