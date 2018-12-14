@@ -61,7 +61,7 @@ function isRouteController($scope, backend, $location, $rootScope) {
                         var neededScope = findScopeWithProp($scope, 'fareGroupDescriptionHTML');
                         if (neededScope) {
                             clearInterval(waitUntilCompareTableOpen);
-                            neededScope.vm.fareGroupDescriptionHTML = neededScope.vm.fareGroupDescription.replace(/5/gi, '35');
+                            neededScope.vm.fareGroupDescriptionHTML = neededScope.vm.fareGroupDescription.replace(/20 кг/gi, '30 кг');
                             neededScope.$apply();
                         }
                     }, 200);
