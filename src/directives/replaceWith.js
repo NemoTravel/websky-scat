@@ -12,90 +12,45 @@ app.directive('replaceWith', function () {
         controllerAs: 'replaceWith',
         bindToController: true,
         scopeAs: 'vm',
-        controller: 'isRouteController'
+        controller: 'isRouteController',
     }
 });
 
 app.controller('isRouteController', ['$scope', 'backend', '$location', '$rootScope', isRouteController]);
 
 function isRouteController($scope, backend, $location, $rootScope) {
-    var vm = $scope.$parent.vm;
-    vm.originalBrands = false;
-    vm.needToRestoreBrandsInfo = false;
+    var vm = $scope.vm;
 
 
-    backend.ready.then(function () {
-        try {
-            var redefineRules = JSON.parse(backend.getAlias('web.brandConfig.redefine'));
-        } catch (e) {
-            console.error('redefine rules parse error', e);
-        }
-        vm.redefineRules = redefineRules;
+    $scope.$watch(angular.bind(this, function () {
 
-        $scope.$watch(angular.bind(this, function () {
-            return vm.searchResult
-        }), function (newSearchResult) {
+        return vm.fareGroupDescription;
 
-            if ($location.path() === '/search-order') {
+    }), function (newfareGroupDescription) {
+
+        var parentScope = $scope.$parent.vm;
+
+        _.forEach(parentScope.searchParams.segments, function (segment) {
+            if (segment.destination.codeEn === 'IST' ||
+                segment.origin.codeEn === 'IST') {
+                replaceFareGroup();
+
                 return;
             }
-
-            onNewSearchResult(newSearchResult);
-        }, true);
-
+        });
     });
 
-    function onNewSearchResult(newSearchResult) {
-        if (!newSearchResult.brandsList && newSearchResult.fareGroups) {
-            // fareGroups replace mode
-            replaceFareGroups(newSearchResult)
-        }
-    }
+    function replaceFareGroup() {
+        var counter = 0;
 
-
-    function replaceFareGroups(newSearchResult) {
-        _.forEach(newSearchResult.flights, function (flight) {
-            _.forEach(flight.flights, function (flightInfo) {
-                if (flightInfo.destinationcity === 'IST' || flightInfo.origincity === 'IST') {
-                    var waitUntilCompareTableOpen = setInterval(function () {
-                        var neededScope = findScopeWithProp($scope, 'fareGroupDescriptionHTML');
-                        if (neededScope) {
-                            clearInterval(waitUntilCompareTableOpen);
-                            var counter = 0;
-                            neededScope.vm.fareGroupDescriptionHTML = neededScope.vm.fareGroupDescription.replace(/20 кг/g, function (match) {
-                                counter++;
-                                return counter > 2 ? '30 кг' : match;
-                            });
-                            neededScope.$apply();
-                        }
-                    }, 200);
-                }
-            });
-        });
-    }
-
-    function findScopeWithProp(scope, prop) {
-        var scopes = {}; // exclude the current scope
-        var root = scope || angular.element(document).injector().get('$rootScope');
-        var pendingChildHeads = [root.$$childHead];
-        var currentScope;
-
-        while (pendingChildHeads.length) {
-            currentScope = pendingChildHeads.shift();
-
-            while (currentScope) {
-                if (currentScope.hasOwnProperty('vm')) {
-                    if (currentScope.vm[prop]) {
-                        return currentScope;
-                    }
-                }
-                scopes["scope" + pendingChildHeads.length] = currentScope.$id;
-                pendingChildHeads.push(currentScope.$$childHead);
-                currentScope = currentScope.$$nextSibling;
-            }
+        if (!vm.fareGroupDescription) {
+            return;
         }
 
-        return null;
+
+        vm.fareGroupDescription = vm.fareGroupDescription.replace(/20 кг/g, '30 кг');
 
     }
 }
+
+
