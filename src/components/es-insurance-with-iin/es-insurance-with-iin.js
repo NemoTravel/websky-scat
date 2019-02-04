@@ -35,6 +35,11 @@ function InsuranceIinController(backend, $q) {
         });
 
         vm.insuranceAvailable = hasAdultKz();
+        if(!vm.insuranceAvailable){
+            backend.removeExtraService({
+                code: vm.service.onlineMode ? 'insuranceOnline' : 'insurance'
+            });
+        }
     }
 
     function hasAdultKzWithIin() {
